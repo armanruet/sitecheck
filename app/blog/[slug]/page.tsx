@@ -2,6 +2,7 @@ import { getPostFromSlug } from '../utils.server';
 import { MDXClient } from '../../components/mdx-client';
 import { Subscribe } from '../../components/blog/Subscribe';
 import { Comments } from '../../components/blog/Comments';
+import '../styles/code-theme.css';
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const { content, metadata } = await getPostFromSlug(params.slug);
@@ -37,17 +38,46 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         prose-ul:my-8 prose-li:text-[20px] prose-li:mb-2
         prose-li:text-gray-700 dark:prose-li:text-gray-300
         
-        prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800
-        prose-pre:my-8 prose-pre:rounded-xl prose-pre:shadow-lg
+        prose-pre:bg-gray-50 dark:prose-pre:bg-gray-900/70
+        prose-pre:my-8 prose-pre:p-4 
+        prose-pre:rounded-xl
+        prose-pre:border dark:prose-pre:border-gray-800
+        prose-pre:shadow-md hover:prose-pre:shadow-lg
+        prose-pre:transition-all prose-pre:duration-300
+        prose-pre:backdrop-blur-sm
+        prose-pre:overflow-x-auto
         
-        prose-code:text-gray-800 dark:prose-code:text-gray-200
-        prose-code:bg-gray-100 dark:prose-code:bg-gray-800/50
-        prose-code:px-1 prose-code:rounded
+        prose-code:font-mono prose-code:text-[15px]
+        prose-code:text-blue-600 dark:prose-code:text-blue-400
+        prose-code:bg-blue-50/50 dark:prose-code:bg-blue-900/20
+        prose-code:px-1.5 prose-code:py-0.5
+        prose-code:rounded-md
+        prose-code:border dark:prose-code:border-gray-800
+        prose-code:before:content-[''] prose-code:after:content-['']
         
-        prose-blockquote:border-l-4 prose-blockquote:border-gray-300 
-        dark:prose-blockquote:border-gray-700
-        prose-blockquote:pl-6 prose-blockquote:italic
-        prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300"
+        [&_pre_code]:grid [&_pre_code]:gap-0
+        [&_pre_code_.highlight]:bg-blue-500/10 dark:[&_pre_code_.highlight]:bg-blue-500/20
+        [&_pre_code_.line-number]:border-r [&_pre_code_.line-number]:border-gray-200
+        [&_pre_code_.line-number]:pr-4 [&_pre_code_.line-number]:text-gray-500
+        [&_pre_code_.line]:px-4 [&_pre_code_.line]:py-0.5
+        
+        [&_pre]:relative
+        [&_pre_.language-badge]:absolute
+        [&_pre_.language-badge]:right-4 [&_pre_.language-badge]:top-4
+        [&_pre_.language-badge]:text-xs [&_pre_.language-badge]:font-mono
+        [&_pre_.language-badge]:px-2 [&_pre_.language-badge]:py-1
+        [&_pre_.language-badge]:rounded-md
+        [&_pre_.language-badge]:bg-blue-500/10 dark:[&_pre_.language-badge]:bg-blue-500/20
+        [&_pre_.language-badge]:text-blue-700 dark:[&_pre_.language-badge]:text-blue-300
+        
+        prose-pre:relative prose-pre:group
+        prose-pre:backdrop-blur-sm
+        
+        prose-code:font-mono prose-code:text-[15px]
+        prose-code:before:content-[''] prose-code:after:content-['']
+        
+        [&_pre_code]:grid [&_pre_code]:gap-0
+        [&_pre_code_.line]:relative [&_pre_code_.line]:px-4 [&_pre_code_.line]:py-0.5"
       >
         <MDXClient source={content} />
       </div>

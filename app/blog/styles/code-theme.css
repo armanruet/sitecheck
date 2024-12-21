@@ -1,0 +1,283 @@
+/* Base code block styling */
+pre[class*="language-"] {
+  @apply bg-gray-50/80 dark:bg-gray-900/80 
+         p-6 my-8 rounded-xl relative
+         border dark:border-gray-800
+         shadow-lg hover:shadow-xl
+         transition-all duration-300
+         backdrop-blur-sm;
+}
+
+/* Language-specific themes */
+.language-javascript,
+.language-js {
+  @apply bg-yellow-50/50 dark:bg-yellow-900/20
+         border-yellow-200/50 dark:border-yellow-700/30;
+}
+
+.language-typescript,
+.language-ts {
+  @apply bg-blue-50/50 dark:bg-blue-900/20
+         border-blue-200/50 dark:border-blue-700/30;
+}
+
+.language-python,
+.language-py {
+  @apply bg-blue-50/50 dark:bg-blue-900/20
+         border-blue-200/50 dark:border-blue-700/30;
+}
+
+.language-rust,
+.language-rs {
+  @apply bg-orange-50/50 dark:bg-orange-900/20
+         border-orange-200/50 dark:border-orange-700/30;
+}
+
+.language-go {
+  @apply bg-cyan-50/50 dark:bg-cyan-900/20
+         border-cyan-200/50 dark:border-cyan-700/30;
+}
+
+.language-bash,
+.language-sh {
+  @apply bg-gray-50/50 dark:bg-gray-900/20
+         border-gray-200/50 dark:border-gray-700/30;
+}
+
+/* Syntax Highlighting Tokens */
+.token.comment {
+  @apply text-gray-400 dark:text-gray-500 italic;
+}
+
+.token.string,
+.token.char,
+.token.attr-value {
+  @apply text-emerald-600 dark:text-emerald-400;
+}
+
+.token.function {
+  @apply text-violet-600 dark:text-violet-400 font-medium;
+}
+
+.token.keyword,
+.token.rule {
+  @apply text-pink-600 dark:text-pink-400 font-semibold;
+}
+
+.token.class-name,
+.token.maybe-class-name {
+  @apply text-yellow-600 dark:text-yellow-400 font-semibold;
+}
+
+.token.property,
+.token.property-access {
+  @apply text-fuchsia-600 dark:text-fuchsia-400;
+}
+
+.token.operator,
+.token.arrow {
+  @apply text-sky-600 dark:text-sky-400 font-medium;
+}
+
+.token.number,
+.token.unit {
+  @apply text-amber-600 dark:text-amber-400;
+}
+
+.token.parameter {
+  @apply text-orange-600 dark:text-orange-400 italic;
+}
+
+.token.regex,
+.token.important {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.token.builtin {
+  @apply text-teal-600 dark:text-teal-400 font-medium;
+}
+
+.token.punctuation {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+/* Language Badges */
+.language-badge {
+  @apply absolute right-3 top-3
+         px-3 py-1.5 rounded-md
+         text-xs font-mono font-medium
+         border dark:border-gray-700/50
+         shadow-sm backdrop-blur-sm;
+}
+
+/* Language-specific badges */
+.language-javascript + .language-badge {
+  @apply bg-yellow-100/80 dark:bg-yellow-900/30
+         text-yellow-800 dark:text-yellow-200
+         border-yellow-200 dark:border-yellow-800;
+}
+
+.language-typescript + .language-badge {
+  @apply bg-blue-100/80 dark:bg-blue-900/30
+         text-blue-800 dark:text-blue-200
+         border-blue-200 dark:border-blue-800;
+}
+
+.language-python + .language-badge {
+  @apply bg-blue-100/80 dark:bg-blue-900/30
+         text-blue-800 dark:text-blue-200
+         border-blue-200 dark:border-blue-800;
+}
+
+/* Copy Button */
+.copy-button {
+  @apply absolute right-3 top-12
+         p-2 rounded-md
+         text-gray-500 dark:text-gray-400
+         hover:text-gray-700 dark:hover:text-gray-200
+         bg-white/50 dark:bg-black/50
+         hover:bg-white dark:hover:bg-black/80
+         backdrop-blur-sm
+         border dark:border-gray-700/50
+         transition-all duration-200
+         opacity-0 group-hover:opacity-100
+         shadow-sm hover:shadow-md;
+}
+
+/* Line Numbers & Highlighting */
+.line-number {
+  @apply text-gray-400 dark:text-gray-500
+         mr-4 select-none tabular-nums
+         border-r border-gray-200 dark:border-gray-700/50
+         pr-4;
+}
+
+.highlight-line {
+  @apply bg-blue-500/10 dark:bg-blue-500/20
+         -mx-6 px-6
+         border-l-4 border-blue-500;
+}
+
+/* Scrollbar */
+pre::-webkit-scrollbar {
+  @apply h-2 w-2;
+}
+
+pre::-webkit-scrollbar-track {
+  @apply bg-transparent rounded-full;
+}
+
+pre::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full
+         hover:bg-gray-400 dark:hover:bg-gray-500
+         transition-colors duration-200;
+}
+
+/* Inline Code */
+:not(pre) > code {
+  @apply text-pink-600 dark:text-pink-400
+         bg-pink-50/50 dark:bg-pink-900/20
+         px-1.5 py-0.5 rounded-md
+         border border-pink-200/50 dark:border-pink-700/30
+         text-[0.9em];
+}
+
+/* Python-specific theme */
+.language-python,
+.language-py {
+  @apply bg-blue-50/50 dark:bg-blue-900/20
+         border-blue-200/50 dark:border-blue-700/30;
+}
+
+/* Python-specific tokens */
+.language-python .token.keyword,
+.language-py .token.keyword {
+  @apply text-blue-600 dark:text-blue-400 font-semibold;
+}
+
+.language-python .token.builtin,
+.language-py .token.builtin {
+  @apply text-indigo-600 dark:text-indigo-400 font-medium;
+}
+
+.language-python .token.function,
+.language-py .token.function {
+  @apply text-violet-600 dark:text-violet-400 font-medium;
+}
+
+.language-python .token.string,
+.language-py .token.string {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.language-python .token.number,
+.language-py .token.number {
+  @apply text-orange-600 dark:text-orange-400;
+}
+
+.language-python .token.comment,
+.language-py .token.comment {
+  @apply text-gray-400 dark:text-gray-500 italic;
+}
+
+.language-python .token.class-name,
+.language-py .token.class-name {
+  @apply text-yellow-600 dark:text-yellow-400 font-semibold;
+}
+
+/* Python imports */
+.language-python .token.imports,
+.language-py .token.imports {
+  @apply text-cyan-600 dark:text-cyan-400;
+}
+
+.language-python .token.from,
+.language-py .token.from,
+.language-python .token.import,
+.language-py .token.import {
+  @apply text-purple-600 dark:text-purple-400 font-semibold;
+}
+
+/* Python method calls */
+.language-python .token.method,
+.language-py .token.method {
+  @apply text-emerald-600 dark:text-emerald-400;
+}
+
+/* Python parameters */
+.language-python .token.parameter,
+.language-py .token.parameter {
+  @apply text-rose-600 dark:text-rose-400 italic;
+}
+
+/* Python operators */
+.language-python .token.operator,
+.language-py .token.operator {
+  @apply text-sky-600 dark:text-sky-400 font-medium;
+}
+
+/* Python punctuation */
+.language-python .token.punctuation,
+.language-py .token.punctuation {
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+/* Python badge */
+.language-python + .language-badge,
+.language-py + .language-badge {
+  @apply bg-blue-100/80 dark:bg-blue-900/30
+         text-blue-800 dark:text-blue-200
+         border-blue-200 dark:border-blue-800;
+}
+
+/* Python string interpolation */
+.language-python .token.interpolation,
+.language-py .token.interpolation {
+  @apply text-teal-600 dark:text-teal-400;
+}
+
+/* Python decorators */
+.language-python .token.decorator,
+.language-py .token.decorator {
+  @apply text-fuchsia-600 dark:text-fuchsia-400 font-medium;
+} 

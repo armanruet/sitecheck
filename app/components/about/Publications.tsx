@@ -13,12 +13,25 @@ interface Publication {
 
 const publications: Publication[] = [
   {
+    authors: ['M. A. Hossen', 'Sang-Jo Yoo'],
+    title: 'Q-Learning–Based Multi-Objective Clustering Algorithm for Cognitive Radio Ad-Hoc Networks',
+    journal: 'IEEE access Journal',
+    year: '2023',
+    impactFactor: '4.098'
+  },
+  {
     authors: ['M. A. Hossen', 'T. X. Vu', 'S. Chatzinotas', 'V. D. Nguyen', 'B. Ottersten'],
-    title:
-      'Joint Resource Allocation and Link Adaptation for Ultra-reliable and Low-latency Services',
+    title: 'Joint Resource Allocation and Link Adaptation for Ultra-reliable and Low-latency Services',
     journal: 'IEEE Consumer Communications & Networking Conference (CCNC)',
     year: '2023',
   },
+  {
+    authors: ['M. A. Hossen', 'S. A. H. Chowdhury', 'M. S. Anower', 'S. Hossen', 'M. F. Pervej', 'M. M. Hasan'],
+    title: 'Effect of Signal Length in Cross-correlation based Underwater Network Size Estimation',
+    journal: '2nd International Conference on Electrical Engineering and Information Communication Technology (ICEEICT)',
+    year: '2015',
+    location: 'Savar, Dhaka, Bangladesh, May 2015'
+  }
 ];
 
 export default function Publications() {
