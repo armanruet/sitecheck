@@ -5,6 +5,7 @@ import type { MDXRemoteProps } from 'next-mdx-remote';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ComponentPropsWithoutRef } from 'react';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
@@ -75,8 +76,22 @@ export const components = {
       </a>
     );
   },
-  code: (props: ComponentPropsWithoutRef<'code'>) => {
-    return <code className="bg-transparent before:content-none after:content-none" {...props} />;
+  code: ({ node, inline, className, children, ...props }) => {
+    const match = /language-(\w+)/.exec(className || '');
+    return !inline && match ? (
+      <SyntaxHighlighter
+        language={match[1]}
+        PreTag="div"
+        className={className}
+        {...props}
+      >
+        {String(children).replace(/\n$/, '')}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
   },
   blockquote: (props: BlockquoteProps) => (
     <blockquote className="ml-[0.075em] border-l-3 border-gray-300 pl-4 text-gray-700" {...props} />
