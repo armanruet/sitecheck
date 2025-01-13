@@ -39,13 +39,22 @@ export default function usePaletteOptions() {
     fetchPosts();
   }, []);
 
-  const generalOptions = posts.map((post) => ({
-    id: post.slug,
-    name: post.metadata.title,
-    onSelect: (slug: string) => router.push(`/blog/${slug}`)
-  }));
+  const generalOptions: PaletteOption[] = [
+    {
+      id: 'theme',
+      name: 'Toggle Theme',
+      icon: theme === 'dark' ? <TbBolt /> : <TbBoltOff />,
+      onSelect: () => setTheme(theme === 'dark' ? 'light' : 'dark')
+    },
+    {
+      id: 'copy',
+      name: 'Copy URL',
+      icon: <HiOutlineDocumentDuplicate />,
+      onSelect: () => navigator.clipboard.writeText(window.location.href)
+    }
+  ];
 
-  const pageOptions = [
+  const pageOptions: PaletteOption[] = [
     {
       id: '/',
       name: 'Home',
@@ -66,7 +75,7 @@ export default function usePaletteOptions() {
     }
   ];
 
-  const blogOptions = posts.map((post) => ({
+  const blogOptions: PaletteOption[] = posts.map((post) => ({
     id: post.slug,
     name: post.metadata.title,
     onSelect: (slug: string) => router.push(`/blog/${slug}`)

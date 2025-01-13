@@ -38,6 +38,20 @@ export default function CommandPalette() {
           />
 
           <Command.List className="mt-4 max-h-[60vh] overflow-y-auto">
+            <Command.Group heading="General">
+              {generalOptions.map((option) => (
+                <Command.Item 
+                  key={option.id}
+                  value={option.name}
+                  onSelect={() => option.onSelect(option.id)}
+                  className="flex items-center gap-2 p-2"
+                >
+                  {option.icon}
+                  <span>{option.name}</span>
+                </Command.Item>
+              ))}
+            </Command.Group>
+
             <Command.Group heading="Pages">
               {pageOptions.map((option) => (
                 <Command.Item 
