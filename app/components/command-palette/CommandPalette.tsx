@@ -58,7 +58,12 @@ export default function CommandPalette() {
 
             <Command.Group heading="Blogs">
               {blogOptions.map((option) => (
-                <Command.Item key={option.id} onSelect={() => option.onSelect(option.id)} className="p-2">
+                <Command.Item 
+                  key={option.id} 
+                  value={option.name}
+                  onSelect={() => option.onSelect(option.id)} 
+                  className="p-2"
+                >
                   {option.name}
                 </Command.Item>
               ))}
