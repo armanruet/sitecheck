@@ -1,15 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   images: {
-    domains: ['cdn-images-1.medium.com'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn-images-1.medium.com',
-        pathname: '**',
-      },
-    ],
+    unoptimized: true,
   },
+  basePath: '',
+  assetPrefix: '',
 }
 
 module.exports = nextConfig 

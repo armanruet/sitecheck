@@ -29,7 +29,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     if (!fs.existsSync(postsDirectory)) return [];
 
     const files = fs.readdirSync(postsDirectory).filter((file) => file.endsWith('.mdx'));
-
+    
     const posts = files.map((file) => {
       const slug = file.replace(/\.mdx$/, '');
       const filePath = path.join(postsDirectory, file);
@@ -39,7 +39,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       const tags = Array.isArray(data.tags)
         ? data.tags.map((tag: string) => tag.toString().trim().toUpperCase())
         : data.tags?.split(',').map((tag: string) => tag.trim().toUpperCase()) || [];
-
+      
       return {
         slug,
         metadata: {
