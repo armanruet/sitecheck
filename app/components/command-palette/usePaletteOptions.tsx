@@ -2,7 +2,7 @@
 
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   HiOutlineDocumentAdd,
   HiOutlineDocumentDuplicate,
@@ -11,21 +11,29 @@ import {
   HiOutlineUser,
 } from 'react-icons/hi';
 import { TbBolt, TbBoltOff } from 'react-icons/tb';
-import { getBlogPosts } from '../../blog/utils.server';
-
-type PaletteOption = {
-  id: string;
-  name: string;
-  onSelect: (v: string) => void;
-  icon?: ReactNode;
-};
+import { BlogPost } from '../../blog/utils.server';
 
 export default function usePaletteOptions() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const posts = getBlogPosts();
+  const [posts, setPosts] = useState<BlogPost[]>([]);
 
-  const generalOptions: PaletteOption[] = [
+  useEffect(() => {
+    // Fetch posts on the client side
+    async function fetchPosts() {
+      try {
+        const response = await fetch('/api/posts');
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        setPosts([]);
+      }
+    }
+    fetchPosts();
+  }, []);
+
+  const generalOptions = [
     {
       id: 'Toggle Theme',
       name: 'Toggle Theme',
@@ -40,7 +48,7 @@ export default function usePaletteOptions() {
     },
   ];
 
-  const pageOptions: PaletteOption[] = [
+  const pageOptions = [
     {
       id: '/',
       name: 'Home',
@@ -67,7 +75,7 @@ export default function usePaletteOptions() {
     },
   ];
 
-  const blogOptions: PaletteOption[] = posts.map((post) => ({
+  const blogOptions = posts.map((post) => ({
     id: post.slug,
     name: post.metadata.title,
     onSelect: (slug) => router.push(`/blog/${slug}`),
