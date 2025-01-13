@@ -1,7 +1,7 @@
 'use client';
 
 import { Command } from 'cmdk';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import usePaletteOptions from './usePaletteOptions';
 
@@ -39,27 +39,27 @@ export default function CommandPalette() {
 
           <Command.List className="mt-4 max-h-[60vh] overflow-y-auto">
             <Command.Group heading="General">
-              {generalOptions.map(({ id, name, onSelect, icon }) => (
-                <Command.Item key={id} onSelect={() => onSelect(id)} className="flex items-center gap-2 p-2">
-                  {icon}
-                  {name}
+              {generalOptions.map((option) => (
+                <Command.Item key={option.id} onSelect={() => option.onSelect(option.id)} className="flex items-center gap-2 p-2">
+                  {option.icon}
+                  {option.name}
                 </Command.Item>
               ))}
             </Command.Group>
 
             <Command.Group heading="Pages">
-              {pageOptions.map(({ id, name, onSelect, icon }) => (
-                <Command.Item key={id} onSelect={() => onSelect(id)} className="flex items-center gap-2 p-2">
-                  {icon}
-                  {name}
+              {pageOptions.map((option) => (
+                <Command.Item key={option.id} onSelect={() => option.onSelect(option.id)} className="flex items-center gap-2 p-2">
+                  {option.icon}
+                  {option.name}
                 </Command.Item>
               ))}
             </Command.Group>
 
             <Command.Group heading="Blogs">
-              {blogOptions.map(({ id, name, onSelect }) => (
-                <Command.Item key={id} onSelect={() => onSelect(id)} className="p-2">
-                  {name}
+              {blogOptions.map((option) => (
+                <Command.Item key={option.id} onSelect={() => option.onSelect(option.id)} className="p-2">
+                  {option.name}
                 </Command.Item>
               ))}
             </Command.Group>
