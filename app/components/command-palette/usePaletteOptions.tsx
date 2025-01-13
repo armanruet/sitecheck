@@ -13,13 +13,19 @@ import {
 import { TbBolt, TbBoltOff } from 'react-icons/tb';
 import { BlogPost } from '../../blog/utils.server';
 
+interface PaletteOption {
+  id: string;
+  name: string;
+  onSelect: (id: string) => void;
+  icon?: ReactNode;
+}
+
 export default function usePaletteOptions() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [posts, setPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
-    // Fetch posts on the client side
     async function fetchPosts() {
       try {
         const response = await fetch('/api/posts');
@@ -33,7 +39,7 @@ export default function usePaletteOptions() {
     fetchPosts();
   }, []);
 
-  const generalOptions = [
+  const generalOptions: PaletteOption[] = [
     {
       id: 'Toggle Theme',
       name: 'Toggle Theme',
@@ -48,7 +54,7 @@ export default function usePaletteOptions() {
     },
   ];
 
-  const pageOptions = [
+  const pageOptions: PaletteOption[] = [
     {
       id: '/',
       name: 'Home',
@@ -75,7 +81,7 @@ export default function usePaletteOptions() {
     },
   ];
 
-  const blogOptions = posts.map((post) => ({
+  const blogOptions: PaletteOption[] = posts.map((post) => ({
     id: post.slug,
     name: post.metadata.title,
     onSelect: (slug) => router.push(`/blog/${slug}`),
