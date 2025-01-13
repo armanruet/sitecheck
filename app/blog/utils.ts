@@ -1,18 +1,14 @@
-export interface BlogPost {
-  slug: string;
-  metadata: {
-    title: string;
-    date: string;
-    description: string;
-    tags: string[];
-    readingTime?: number;
-    draft: boolean;
-    image: string | null;
-  };
-}
+import { BlogPost } from './utils.server';
 
-export async function getAllPosts(): Promise<BlogPost[]> {
-  const res = await fetch('/api/posts');
-  const posts = await res.json();
-  return posts;
+export type { BlogPost };
+
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const response = await fetch('/api/posts');
+    const posts = await response.json();
+    return posts;
+  } catch (error) {
+    console.error('Error fetching blog posts:', error);
+    return [];
+  }
 }
