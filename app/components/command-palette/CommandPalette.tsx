@@ -38,30 +38,26 @@ export default function CommandPalette() {
           />
 
           <Command.List className="mt-4 max-h-[60vh] overflow-y-auto">
-            <Command.Group heading="General">
-              {generalOptions.map((option) => (
-                <Command.Item key={option.id} onSelect={() => option.onSelect(option.id)} className="flex items-center gap-2 p-2">
-                  {option.icon}
-                  {option.name}
-                </Command.Item>
-              ))}
-            </Command.Group>
-
             <Command.Group heading="Pages">
               {pageOptions.map((option) => (
-                <Command.Item key={option.id} onSelect={() => option.onSelect(option.id)} className="flex items-center gap-2 p-2">
+                <Command.Item 
+                  key={option.id}
+                  value={option.name}
+                  onSelect={() => option.onSelect(option.id)}
+                  className="flex items-center gap-2 p-2"
+                >
                   {option.icon}
-                  {option.name}
+                  <span>{option.name}</span>
                 </Command.Item>
               ))}
             </Command.Group>
 
-            <Command.Group heading="Blogs">
+            <Command.Group heading="Blog Posts">
               {blogOptions.map((option) => (
                 <Command.Item 
-                  key={option.id} 
+                  key={option.id}
                   value={option.name}
-                  onSelect={() => option.onSelect(option.id)} 
+                  onSelect={() => option.onSelect(option.id)}
                   className="p-2"
                 >
                   {option.name}

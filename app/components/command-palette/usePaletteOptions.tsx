@@ -13,12 +13,12 @@ import {
 import { TbBolt, TbBoltOff } from 'react-icons/tb';
 import { BlogPost } from '../../blog/utils.server';
 
-interface PaletteOption {
+type PaletteOption = {
   id: string;
   name: string;
   onSelect: (id: string) => void;
   icon?: ReactNode;
-}
+};
 
 export default function usePaletteOptions() {
   const router = useRouter();
@@ -39,52 +39,37 @@ export default function usePaletteOptions() {
     fetchPosts();
   }, []);
 
-  const generalOptions: PaletteOption[] = [
-    {
-      id: 'Toggle Theme',
-      name: 'Toggle Theme',
-      icon: theme === 'dark' ? <TbBolt /> : <TbBoltOff />,
-      onSelect: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
-    },
-    {
-      id: 'Copy Current URL',
-      name: 'Copy Current URL',
-      icon: <HiOutlineDocumentDuplicate />,
-      onSelect: () => navigator.clipboard.writeText(window.location.href),
-    },
-  ];
+  const generalOptions = posts.map((post) => ({
+    id: post.slug,
+    name: post.metadata.title,
+    onSelect: (slug: string) => router.push(`/blog/${slug}`)
+  }));
 
-  const pageOptions: PaletteOption[] = [
+  const pageOptions = [
     {
       id: '/',
       name: 'Home',
       icon: <HiOutlineHome />,
-      onSelect: (v) => router.push(v),
+      onSelect: (path: string) => router.push(path)
     },
     {
       id: '/blog',
       name: 'Blog',
       icon: <HiOutlinePencil />,
-      onSelect: (v) => router.push(v),
+      onSelect: (path: string) => router.push(path)
     },
     {
       id: '/about',
       name: 'About',
       icon: <HiOutlineUser />,
-      onSelect: (v) => router.push(v),
-    },
-    {
-      id: '/uses',
-      name: 'Uses',
-      icon: <HiOutlineDocumentAdd />,
-      onSelect: (v) => router.push(v),
-    },
+      onSelect: (path: string) => router.push(path)
+    }
   ];
 
-  const blogOptions: PaletteOption[] = posts.map((post) => ({
+  const blogOptions = posts.map((post) => ({
     id: post.slug,
     name: post.metadata.title,
-    onSelect: (slug) => router.push(`/blog/${slug}`),
+    onSelect: (slug: string) => router.push(`/blog/${slug}`)
   }));
 
   return { pageOptions, blogOptions, generalOptions };
