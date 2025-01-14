@@ -3,11 +3,18 @@
 import { Command } from 'cmdk';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import usePaletteOptions from './usePaletteOptions';
+import { useTheme } from 'next-themes';
+import { usePaletteOptions } from './usePaletteOptions';
+import { BlogPost } from '@/app/blog/utils.server';
 
-export default function CommandPalette() {
+interface CommandPaletteProps {
+  posts: BlogPost[];
+}
+
+export function CommandPalette({ posts }: CommandPaletteProps) {
   const [open, setOpen] = useState(false);
-  const { pageOptions, blogOptions, generalOptions } = usePaletteOptions();
+  const { options, handleSelect } = usePaletteOptions(posts);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -28,57 +35,32 @@ export default function CommandPalette() {
           open={open}
           onOpenChange={setOpen}
           label="Global Command Menu"
-          className="fixed top-[20vh] left-1/2 z-50 w-full max-w-[640px] -translate-x-1/2 transform rounded-xl 
-            border bg-white p-4 shadow-2xl dark:border-neutral-800 dark:bg-neutral-900"
+          className="fixed inset-0 p-4 pt-[20vh] bg-gray-900/50 backdrop-blur-sm z-50"
         >
-          <Command.Input
-            placeholder="Search for pages and posts..."
-            className="w-full border-none bg-transparent text-lg outline-none 
-              placeholder:text-gray-400 dark:placeholder:text-gray-500"
-          />
-
-          <Command.List className="mt-4 max-h-[60vh] overflow-y-auto">
-            <Command.Group heading="General">
-              {generalOptions.map((option) => (
-                <Command.Item 
+          <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+            <Command.Input 
+              placeholder="Search posts..."
+              className="w-full px-4 py-3 text-base border-b border-gray-200 dark:border-gray-700 bg-transparent focus:outline-none"
+            />
+            <Command.List className="max-h-[300px] overflow-y-auto p-2">
+              <Command.Empty className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">
+                No results found.
+              </Command.Empty>
+              {options.map((option) => (
+                <Command.Item
                   key={option.id}
                   value={option.name}
-                  onSelect={() => option.onSelect(option.id)}
-                  className="flex items-center gap-2 p-2"
-                >
-                  {option.icon}
-                  <span>{option.name}</span>
-                </Command.Item>
-              ))}
-            </Command.Group>
-
-            <Command.Group heading="Pages">
-              {pageOptions.map((option) => (
-                <Command.Item 
-                  key={option.id}
-                  value={option.name}
-                  onSelect={() => option.onSelect(option.id)}
-                  className="flex items-center gap-2 p-2"
-                >
-                  {option.icon}
-                  <span>{option.name}</span>
-                </Command.Item>
-              ))}
-            </Command.Group>
-
-            <Command.Group heading="Blog Posts">
-              {blogOptions.map((option) => (
-                <Command.Item 
-                  key={option.id}
-                  value={option.name}
-                  onSelect={() => option.onSelect(option.id)}
-                  className="p-2"
+                  onSelect={() => {
+                    handleSelect(option.id);
+                    setOpen(false);
+                  }}
+                  className="px-4 py-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   {option.name}
                 </Command.Item>
               ))}
-            </Command.Group>
-          </Command.List>
+            </Command.List>
+          </div>
         </Command.Dialog>
       )}
     </AnimatePresence>
