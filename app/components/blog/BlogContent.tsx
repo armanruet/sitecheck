@@ -1,8 +1,6 @@
 'use client';
 
-import { useState } from 'react';
 import { BlogPost } from '../../blog/utils.server';
-import SearchBar from './SearchBar';
 import TagsList from './TagsList';
 import { BlogPosts } from '../posts';
 
@@ -12,10 +10,15 @@ interface BlogContentProps {
 }
 
 export default function BlogContent({ posts, tagCounts }: BlogContentProps) {
+  const formattedTags = Object.entries(tagCounts).map(([name, count]) => ({
+    name,
+    count,
+  }));
+
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-8">
       <div className="mx-auto max-w-2xl lg:max-w-none">
-        <TagsList tags={Object.keys(tagCounts)} counts={tagCounts} />
+        <TagsList tags={formattedTags} />
         <BlogPosts posts={posts} />
       </div>
     </div>
