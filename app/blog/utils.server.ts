@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200; // Average reading speed
@@ -94,7 +95,13 @@ export async function getPostFromSlug(slug: string) {
       ? data.tags.map((tag: string) => tag.toString().trim().toUpperCase())
       : data.tags?.split(',').map((tag: string) => tag.trim().toUpperCase()) || [];
 
-    const mdxSource = await serialize(content);
+    const mdxSource = await serialize(content, {
+      mdxOptions: {
+        // @ts-expect-error - Types are mismatched but runtime works correctly
+        rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
+        development: process.env.NODE_ENV === 'development',
+      },
+    });
 
     return {
       content: mdxSource,
