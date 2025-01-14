@@ -4,13 +4,6 @@ import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
 import rehypePrettyCode from 'rehype-pretty-code';
 
-function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200; // Average reading speed
-  const words = content.trim().split(/\s+/).length;
-  const readingTime = Math.ceil(words / wordsPerMinute);
-  return Math.max(1, readingTime); // Minimum 1 minute reading time
-}
-
 export interface BlogPost {
   slug: string;
   metadata: {
@@ -18,105 +11,66 @@ export interface BlogPost {
     date: string;
     description: string;
     tags: string[];
-    readingTime?: number;
-    draft: boolean;
-    image: string | null;
+    image?: string;
+    draft?: boolean;
   };
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-  try {
-    const postsDirectory = path.join(process.cwd(), 'app/blog/posts');
-    if (!fs.existsSync(postsDirectory)) return [];
+  const postsDirectory = path.join(process.cwd(), 'app/blog/posts');
+  if (!fs.existsSync(postsDirectory)) return [];
 
-    const files = fs.readdirSync(postsDirectory).filter((file) => file.endsWith('.mdx'));
+  const files = fs.readdirSync(postsDirectory).filter(file => file.endsWith('.mdx'));
+  
+  const posts = files.map(fileName => {
+    const slug = fileName.replace('.mdx', '');
+    const filePath = path.join(postsDirectory, fileName);
+    const { data } = matter(fs.readFileSync(filePath, 'utf-8'));
     
-    const posts = files.map((file) => {
-      const slug = file.replace(/\.mdx$/, '');
-      const filePath = path.join(postsDirectory, file);
-      const { data, content } = matter(fs.readFileSync(filePath, 'utf-8'));
-      const readingTime = calculateReadingTime(content);
-
-      const tags = Array.isArray(data.tags)
-        ? data.tags.map((tag: string) => tag.toString().trim().toUpperCase())
-        : data.tags?.split(',').map((tag: string) => tag.trim().toUpperCase()) || [];
-      
-      return {
-        slug,
-        metadata: {
-          title: data.title || '',
-          date: data.publishedAt || data.date || '',
-          description: data.summary || data.description || '',
-          tags,
-          readingTime,
-          draft: data.draft || false,
-          image: data.image || null,
-        },
-      };
-    });
-
-    return posts
-      .filter((post) => !post.metadata.draft)
-      .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
-  } catch (error) {
-    console.error('Error in getBlogPosts:', error);
-    return [];
-  }
-}
-
-export function getTagsWithCount(posts: BlogPost[]): { name: string; count: number }[] {
-  const tagCounts: { [key: string]: number } = {};
-
-  posts.forEach((post) => {
-    post.metadata.tags.forEach((tag) => {
-      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-    });
+    return {
+      slug,
+      metadata: {
+        title: data.title,
+        date: data.date,
+        description: data.description,
+        tags: Array.isArray(data.tags) 
+          ? data.tags 
+          : data.tags?.split(',').map((tag: string) => tag.trim()) || [],
+        image: data.image,
+        draft: data.draft,
+      }
+    };
   });
 
-  return Object.entries(tagCounts)
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
+  return posts
+    .filter(post => !post.metadata.draft)
+    .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
 }
 
 export async function getPostFromSlug(slug: string) {
-  try {
-    const postsDirectory = path.join(process.cwd(), 'app/blog/posts');
-    const filePath = path.join(postsDirectory, `${slug}.mdx`);
+  const filePath = path.join(process.cwd(), 'app/blog/posts', `${slug}.mdx`);
+  const source = fs.readFileSync(filePath, 'utf-8');
+  const { content, data } = matter(source);
 
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`Post file not found: ${filePath}`);
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      rehypePlugins: [
+        [rehypePrettyCode, { theme: 'github-dark' }]
+      ],
+    },
+    scope: data,
+  });
+
+  return {
+    content: mdxSource,
+    metadata: {
+      title: data.title,
+      date: data.date,
+      description: data.description,
+      tags: Array.isArray(data.tags) 
+        ? data.tags 
+        : data.tags?.split(',').map((tag: string) => tag.trim()) || [],
+      image: data.image,
     }
-
-    const source = fs.readFileSync(filePath, 'utf-8');
-    const { data, content } = matter(source);
-    const readingTime = calculateReadingTime(content);
-
-    const tags = Array.isArray(data.tags)
-      ? data.tags.map((tag: string) => tag.toString().trim().toUpperCase())
-      : data.tags?.split(',').map((tag: string) => tag.trim().toUpperCase()) || [];
-
-    const mdxSource = await serialize(content, {
-      mdxOptions: {
-        // @ts-expect-error - Types are mismatched but runtime works correctly
-        rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
-        development: process.env.NODE_ENV === 'development',
-      },
-    });
-
-    return {
-      content: mdxSource,
-      metadata: {
-        title: data.title || '',
-        date: data.publishedAt || data.date || '',
-        description: data.summary || data.description || '',
-        tags,
-        readingTime,
-        draft: data.draft || false,
-        image: data.image || null,
-      },
-    };
-  } catch (error) {
-    console.error('Error in getPostFromSlug:', error);
-    throw error;
-  }
+  };
 }
