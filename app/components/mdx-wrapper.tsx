@@ -2,7 +2,7 @@
 
 import { MDXRemote } from 'next-mdx-remote';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { components } from './mdx-content';
+import { mdxComponents } from './mdx-content';
 
 interface MDXWrapperProps {
   content: MDXRemoteSerializeResult;
@@ -11,7 +11,7 @@ interface MDXWrapperProps {
 export function MDXWrapper({ content }: MDXWrapperProps) {
   return (
     <div className="mdx-content prose dark:prose-invert">
-      <MDXRemote {...content} components={components} />
+      <MDXRemote {...content} components={mdxComponents} />
     </div>
   );
 }

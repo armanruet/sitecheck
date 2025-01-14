@@ -1,7 +1,6 @@
 'use client';
 
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import type { MDXRemoteProps } from 'next-mdx-remote/rsc';
+import { MDXRemote } from 'next-mdx-remote';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ComponentPropsWithoutRef } from 'react';
@@ -10,7 +9,7 @@ type HeadingProps = ComponentPropsWithoutRef<'h1'>;
 type ParagraphProps = ComponentPropsWithoutRef<'p'>;
 type AnchorProps = ComponentPropsWithoutRef<'a'>;
 
-const components = {
+export const mdxComponents = {
   h1: (props: HeadingProps) => (
     <h1 className="text-3xl font-bold tracking-tight mt-8 mb-4" {...props} />
   ),
@@ -53,13 +52,13 @@ const components = {
 };
 
 interface MDXContentProps {
-  source: any; // We'll accept any for now since we're using RSC
+  source: any;
 }
 
 export function MDXContent({ source }: MDXContentProps) {
   return (
     <div className="mdx-content prose dark:prose-invert">
-      <MDXRemote {...source} components={components} />
+      <MDXRemote {...source} components={mdxComponents} />
     </div>
   );
 }
