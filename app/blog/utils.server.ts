@@ -1,10 +1,18 @@
 import { compileMDX } from 'next-mdx-remote/rsc';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import type { Options } from 'rehype-pretty-code';
 import rehypePrettyCode from 'rehype-pretty-code';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
+// Define the pretty code options
+const prettyCodeOptions: Partial<Options> = {
+  theme: 'github-dark',
+  keepBackground: true,
+};
+
+// Define the type for frontmatter
 interface Frontmatter {
   title: string;
   description: string;
@@ -24,13 +32,12 @@ interface PostData {
   metadata: Frontmatter;
 }
 
-export async function getMDXContent(source: string): Promise<{ content: MDXRemoteSerializeResult; frontmatter: Frontmatter }> {
-  // @ts-expect-error - Types are mismatched but runtime works correctly
+export async function getMDXContent(source: string): Promise<{ content: any; frontmatter: Frontmatter }> {
   const { content, frontmatter } = await compileMDX<Frontmatter>({
     source,
     options: {
       mdxOptions: {
-        rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
+        rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
         development: process.env.NODE_ENV === 'development',
       },
       parseFrontmatter: true,
@@ -53,16 +60,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     
     return {
       slug,
-      frontmatter: {
-        title: data.title,
-        date: data.date,
-        description: data.description,
-        tags: Array.isArray(data.tags) 
-          ? data.tags 
-          : data.tags?.split(',').map((tag: string) => tag.trim()) || [],
-        image: data.image,
-        draft: data.draft,
-      }
+      frontmatter: data as Frontmatter
     };
   });
 
@@ -71,30 +69,13 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
 }
 
-export async function getPostFromSlug(slug: string) {
+export async function getPostFromSlug(slug: string): Promise<PostData> {
   const filePath = path.join(process.cwd(), 'app/blog/posts', `${slug}.mdx`);
   const source = fs.readFileSync(filePath, 'utf-8');
-  const { content, data } = matter(source);
-
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      // @ts-expect-error - Type mismatch between vfile versions
-      rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
-      development: process.env.NODE_ENV === 'development',
-    },
-    scope: data,
-  });
+  const { content, frontmatter } = await getMDXContent(source);
 
   return {
-    content: mdxSource,
-    metadata: {
-      title: data.title,
-      date: data.date,
-      description: data.description,
-      tags: Array.isArray(data.tags) 
-        ? data.tags 
-        : data.tags?.split(',').map((tag: string) => tag.trim()) || [],
-      image: data.image,
-    }
+    content,
+    metadata: frontmatter
   };
 }
