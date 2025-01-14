@@ -5,7 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { usePaletteOptions } from './usePaletteOptions';
-import { BlogPost } from '@/app/blog/utils.server';
+import { BlogPost } from '../../blog/utils.server';
 
 interface CommandPaletteProps {
   posts: BlogPost[];

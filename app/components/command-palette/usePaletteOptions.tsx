@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
-import { BlogPost } from '@/app/blog/utils.server';
+import { BlogPost } from '../../blog/utils.server';
 
 interface PaletteOption {
   id: string;
