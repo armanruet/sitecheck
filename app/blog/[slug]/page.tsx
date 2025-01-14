@@ -2,7 +2,7 @@ import { getPostFromSlug, getBlogPosts } from '../utils.server';
 import { MDXWrapper } from '../../components/mdx-wrapper';
 import styles from './blog-post.module.css';
 
-// Add this function for static page generation
+// Required for static site generation with output: export
 export async function generateStaticParams() {
   const posts = await getBlogPosts();
   return posts.map((post) => ({

@@ -1,38 +1,64 @@
 'use client';
 
-import { MDXRemote } from 'next-mdx-remote';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ComponentPropsWithoutRef } from 'react';
+
+type HeadingProps = ComponentPropsWithoutRef<'h1'>;
+type ParagraphProps = ComponentPropsWithoutRef<'p'>;
+type AnchorProps = ComponentPropsWithoutRef<'a'>;
 
 const components = {
-  h1: (props: React.HTMLProps<HTMLHeadingElement>) => (
-    <h1 className="text-4xl font-bold py-4 text-center" {...props} />
+  h1: (props: HeadingProps) => (
+    <h1 className="text-3xl font-bold tracking-tight mt-8 mb-4" {...props} />
   ),
-  h2: (props: React.HTMLProps<HTMLHeadingElement>) => (
-    <h2 className="text-3xl font-bold py-3 text-center" {...props} />
+  p: (props: ParagraphProps) => (
+    <p className="leading-7 [&:not(:first-child)]:mt-6" {...props} />
   ),
-  h3: (props: React.HTMLProps<HTMLHeadingElement>) => (
-    <h3 className="text-2xl font-bold py-3 text-center" {...props} />
-  ),
-  p: (props: React.HTMLProps<HTMLParagraphElement>) => (
-    <p className="py-2 text-center text-lg" {...props} />
+  a: ({ href = '', ...props }: AnchorProps) => {
+    if (href.startsWith('http')) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
+          {...props}
+        />
+      );
+    }
+    return (
+      <Link
+        href={href}
+        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
+        {...props}
+      />
+    );
+  },
+  img: ({ src, alt, ...props }: any) => (
+    <div className="relative aspect-video my-8">
+      {src && (
+        <Image
+          src={src}
+          alt={alt || ''}
+          fill
+          className="object-cover rounded-lg"
+          {...props}
+        />
+      )}
+    </div>
   ),
 };
 
-interface MDXComponents {
-  [key: string]: React.ComponentType<any>;
+interface MDXClientProps {
+  content: MDXRemoteSerializeResult;
 }
 
-interface MDXProps {
-  source: MDXRemoteSerializeResult<Record<string, unknown>>;
-  components?: Record<string, React.ComponentType<unknown>>;
-}
-
-export function MDXClient({ source }: MDXProps) {
-  if (!source) return null;
-
+export function MDXClient({ content }: MDXClientProps) {
   return (
-    <div className="mdx-content prose prose-lg dark:prose-invert mx-auto max-w-4xl">
-      <MDXRemote {...source} components={components} />
+    <div className="mdx-content prose dark:prose-invert">
+      <MDXRemote {...content} components={components} />
     </div>
   );
 }
