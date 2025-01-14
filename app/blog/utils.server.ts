@@ -54,9 +54,9 @@ export async function getPostFromSlug(slug: string) {
 
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      rehypePlugins: [
-        [rehypePrettyCode, { theme: 'github-dark' }]
-      ],
+      // @ts-expect-error - Type mismatch between vfile versions
+      rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
+      development: process.env.NODE_ENV === 'development',
     },
     scope: data,
   });
