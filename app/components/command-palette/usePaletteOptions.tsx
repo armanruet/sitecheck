@@ -14,11 +14,13 @@ export function usePaletteOptions(posts: BlogPost[]) {
   const router = useRouter();
 
   const blogOptions: PaletteOption[] = useMemo(() => 
-    posts.map((post) => ({
-      id: post.slug,
-      name: post.frontmatter.title,
-      onSelect: (slug: string) => router.push(`/blog/${slug}`)
-    }))
+    posts
+      .filter(post => post.frontmatter.title)
+      .map((post) => ({
+        id: post.slug,
+        name: post.frontmatter.title || 'Untitled',
+        onSelect: (slug: string) => router.push(`/blog/${slug}`)
+      }))
   , [posts, router]);
 
   const handleSelect = useCallback((id: string) => {
