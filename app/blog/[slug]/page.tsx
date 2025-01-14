@@ -1,4 +1,4 @@
-import { getPostFromSlug } from '../utils.server';
+import { getPostFromSlug, getBlogPosts } from '../utils.server';
 import { MDXWrapper } from '../../components/mdx-wrapper';
 import styles from './blog-post.module.css';
 
