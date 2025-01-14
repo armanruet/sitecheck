@@ -1,14 +1,14 @@
-import { getBlogPosts } from './blog/utils.server';
 import { MetadataRoute } from 'next';
+import { getBlogPosts } from './blog/utils.server';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://yourusername.github.io';
-
-  // Get all blog posts
+  const baseUrl = 'https://yourdomain.com';
   const posts = await getBlogPosts();
+
+  // Generate URLs for blog posts
   const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.metadata.date),
+    lastModified: new Date(post.frontmatter.date),
   }));
 
   return [
@@ -17,11 +17,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
     },
     {
-      url: `${baseUrl}/about`,
+      url: `${baseUrl}/blog`,
       lastModified: new Date(),
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
     },
     ...blogUrls,
