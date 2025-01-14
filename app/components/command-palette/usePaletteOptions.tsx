@@ -1,85 +1,35 @@
 'use client';
 
-import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect, useState } from 'react';
-import {
-  HiOutlineDocumentAdd,
-  HiOutlineDocumentDuplicate,
-  HiOutlineHome,
-  HiOutlinePencil,
-  HiOutlineUser,
-} from 'react-icons/hi';
-import { TbBolt, TbBoltOff } from 'react-icons/tb';
-import { BlogPost } from '../../blog/utils.server';
+import { useCallback, useMemo } from 'react';
+import { BlogPost } from '@/app/blog/utils.server';
 
-type PaletteOption = {
+interface PaletteOption {
   id: string;
   name: string;
   onSelect: (id: string) => void;
-  icon?: ReactNode;
-};
+}
 
-export default function usePaletteOptions() {
+export function usePaletteOptions(posts: BlogPost[]) {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
-  const [posts, setPosts] = useState<BlogPost[]>([]);
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch('/api/posts');
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-        setPosts([]);
-      }
+  const blogOptions: PaletteOption[] = useMemo(() => 
+    posts.map((post) => ({
+      id: post.slug,
+      name: post.frontmatter.title,
+      onSelect: (slug: string) => router.push(`/blog/${slug}`)
+    }))
+  , [posts, router]);
+
+  const handleSelect = useCallback((id: string) => {
+    const option = blogOptions.find(opt => opt.id === id);
+    if (option) {
+      option.onSelect(id);
     }
-    fetchPosts();
-  }, []);
+  }, [blogOptions]);
 
-  const generalOptions: PaletteOption[] = [
-    {
-      id: 'theme',
-      name: 'Toggle Theme',
-      icon: theme === 'dark' ? <TbBolt /> : <TbBoltOff />,
-      onSelect: () => setTheme(theme === 'dark' ? 'light' : 'dark')
-    },
-    {
-      id: 'copy',
-      name: 'Copy URL',
-      icon: <HiOutlineDocumentDuplicate />,
-      onSelect: () => navigator.clipboard.writeText(window.location.href)
-    }
-  ];
-
-  const pageOptions: PaletteOption[] = [
-    {
-      id: '/',
-      name: 'Home',
-      icon: <HiOutlineHome />,
-      onSelect: (path: string) => router.push(path)
-    },
-    {
-      id: '/blog',
-      name: 'Blog',
-      icon: <HiOutlinePencil />,
-      onSelect: (path: string) => router.push(path)
-    },
-    {
-      id: '/about',
-      name: 'About',
-      icon: <HiOutlineUser />,
-      onSelect: (path: string) => router.push(path)
-    }
-  ];
-
-  const blogOptions: PaletteOption[] = posts.map((post) => ({
-    id: post.slug,
-    name: post.metadata.title,
-    onSelect: (slug: string) => router.push(`/blog/${slug}`)
-  }));
-
-  return { pageOptions, blogOptions, generalOptions };
+  return {
+    options: blogOptions,
+    handleSelect
+  };
 }
