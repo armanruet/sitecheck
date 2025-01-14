@@ -37,6 +37,7 @@ export async function getMDXContent(source: string): Promise<{ content: any; fro
     source,
     options: {
       mdxOptions: {
+        // @ts-ignore - Known issue with vfile versions
         rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
         development: process.env.NODE_ENV === 'development',
       },
