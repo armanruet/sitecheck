@@ -49,7 +49,7 @@ export async function getMDXContent(source: string) {
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
-  const postsDirectory = path.join(process.cwd(), 'app/blog/posts');
+  const postsDirectory = path.join(process.cwd(), 'app/content/blog');
   if (!fs.existsSync(postsDirectory)) {
     console.warn(`Posts directory not found: ${postsDirectory}`);
     return [];
@@ -74,7 +74,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPostFromSlug(slug: string): Promise<PostData> {
-  const filePath = path.join(process.cwd(), 'app/blog/posts', `${slug}.mdx`);
+  const filePath = path.join(process.cwd(), 'app/content/blog', `${slug}.mdx`);
   if (!fs.existsSync(filePath)) {
     throw new Error(`Post not found: ${slug}`);
   }
