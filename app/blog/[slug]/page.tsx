@@ -1,5 +1,5 @@
-import { getPostFromSlug, getBlogPosts } from '../utils.server';
-import { MDXContent } from '../../components/mdx-content';
+import { getPostFromSlug } from '../utils.server';
+import { MDXWrapper } from '../../components/mdx-wrapper';
 import styles from './blog-post.module.css';
 
 // Add this function for static page generation
@@ -30,7 +30,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       </header>
 
       <div className={styles.content}>
-        <MDXContent source={content} />
+        <MDXWrapper source={content} />
       </div>
     </article>
   );
