@@ -30,7 +30,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
       </header>
 
       <div className={styles.content}>
-        <MDXWrapper source={content} />
+        <MDXWrapper content={content} />
       </div>
     </article>
   );

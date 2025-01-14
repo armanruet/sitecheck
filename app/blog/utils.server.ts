@@ -1,19 +1,43 @@
+import { compileMDX } from 'next-mdx-remote/rsc';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import rehypePrettyCode from 'rehype-pretty-code';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { serialize } from 'next-mdx-remote/serialize';
-import rehypePrettyCode from 'rehype-pretty-code';
+
+interface Frontmatter {
+  title: string;
+  description: string;
+  date: string;
+  tags?: string[];
+  image?: string;
+  [key: string]: any;
+}
 
 export interface BlogPost {
   slug: string;
-  metadata: {
-    title: string;
-    date: string;
-    description: string;
-    tags: string[];
-    image?: string;
-    draft?: boolean;
-  };
+  frontmatter: Frontmatter;
+}
+
+interface PostData {
+  content: MDXRemoteSerializeResult;
+  metadata: Frontmatter;
+}
+
+export async function getMDXContent(source: string): Promise<{ content: MDXRemoteSerializeResult; frontmatter: Frontmatter }> {
+  // @ts-expect-error - Types are mismatched but runtime works correctly
+  const { content, frontmatter } = await compileMDX<Frontmatter>({
+    source,
+    options: {
+      mdxOptions: {
+        rehypePlugins: [[rehypePrettyCode, { theme: 'github-dark' }]],
+        development: process.env.NODE_ENV === 'development',
+      },
+      parseFrontmatter: true,
+    },
+  });
+
+  return { content, frontmatter };
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
@@ -29,7 +53,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
     
     return {
       slug,
-      metadata: {
+      frontmatter: {
         title: data.title,
         date: data.date,
         description: data.description,
@@ -43,8 +67,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
   });
 
   return posts
-    .filter(post => !post.metadata.draft)
-    .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+    .filter(post => !post.frontmatter.draft)
+    .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
 }
 
 export async function getPostFromSlug(slug: string) {

@@ -1,17 +1,17 @@
 'use client';
 
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import type { MDXRemoteProps } from 'next-mdx-remote/rsc';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { components } from './mdx-content';
 
 interface MDXWrapperProps {
-  source: MDXRemoteProps;
+  content: MDXRemoteSerializeResult;
 }
 
-export function MDXWrapper({ source }: MDXWrapperProps) {
+export function MDXWrapper({ content }: MDXWrapperProps) {
   return (
     <div className="mdx-content prose dark:prose-invert">
-      <MDXRemote {...source} components={components} />
+      <MDXRemote {...content} components={components} />
     </div>
   );
 }
