@@ -1,5 +1,5 @@
 import { compileMDX } from 'next-mdx-remote/rsc';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+import type { MDXRemoteProps } from 'next-mdx-remote';
 import type { Options } from 'rehype-pretty-code';
 import rehypePrettyCode from 'rehype-pretty-code';
 import fs from 'fs';
@@ -28,11 +28,11 @@ export interface BlogPost {
 }
 
 interface PostData {
-  content: MDXRemoteSerializeResult;
+  content: any;
   metadata: Frontmatter;
 }
 
-export async function getMDXContent(source: string): Promise<{ content: any; frontmatter: Frontmatter }> {
+export async function getMDXContent(source: string) {
   const { content, frontmatter } = await compileMDX<Frontmatter>({
     source,
     options: {
@@ -50,7 +50,10 @@ export async function getMDXContent(source: string): Promise<{ content: any; fro
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const postsDirectory = path.join(process.cwd(), 'app/blog/posts');
-  if (!fs.existsSync(postsDirectory)) return [];
+  if (!fs.existsSync(postsDirectory)) {
+    console.warn(`Posts directory not found: ${postsDirectory}`);
+    return [];
+  }
 
   const files = fs.readdirSync(postsDirectory).filter(file => file.endsWith('.mdx'));
   
@@ -72,6 +75,10 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 
 export async function getPostFromSlug(slug: string): Promise<PostData> {
   const filePath = path.join(process.cwd(), 'app/blog/posts', `${slug}.mdx`);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Post not found: ${slug}`);
+  }
+  
   const source = fs.readFileSync(filePath, 'utf-8');
   const { content, frontmatter } = await getMDXContent(source);
 
