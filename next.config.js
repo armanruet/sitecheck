@@ -4,8 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/your-repo-name' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/your-repo-name/' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/armanruet52.github.io' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/armanruet52.github.io/' : '',
 }
 
 module.exports = nextConfig 

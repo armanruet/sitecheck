@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="theme-color" content="#000000" />
       </head>
       <body
-        className="bg-white text-black antialiased dark:bg-black dark:text-white"
+        className="min-h-screen bg-white text-black antialiased dark:bg-black dark:text-white"
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -34,9 +34,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           enableSystem={false}
           themes={['dark', 'light']}
         >
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+              {children}
+            </main>
+            <Footer />
+          </div>
           {process.env.NODE_ENV === 'production' && <Analytics />}
         </ThemeProvider>
       </body>
