@@ -10,8 +10,9 @@ const nextConfig = {
       },
     ],
   },
-  basePath: '',
-  assetPrefix: '',
+  trailingSlash: true,
+  basePath: process.env.NODE_ENV === 'production' ? '' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '.' : '',
 }
 
 module.exports = nextConfig 
