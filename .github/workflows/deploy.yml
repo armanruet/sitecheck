@@ -25,11 +25,22 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: |
-          yarn build
-          cp -r public/static/images out/static/
+        run: yarn build
         env:
           NEXT_PUBLIC_BASE_PATH: ''
+
+      # Add debug steps to verify image copying
+      - name: Debug - List public directory
+        run: ls -la public/static/images/
+
+      - name: Debug - List out directory
+        run: ls -la out/static/images/
+
+      # Ensure directory exists and copy images
+      - name: Copy Images
+        run: |
+          mkdir -p out/static/images
+          cp -rv public/static/images/* out/static/images/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
