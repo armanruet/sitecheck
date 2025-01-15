@@ -22,7 +22,7 @@ export function BlogPosts({ posts }: BlogPostsProps) {
               <div className="relative w-full h-full bg-gray-100 dark:bg-gray-800">
                 <Image
                   src={post.frontmatter.image}
-                  alt={post.frontmatter.title}
+                  alt={post.frontmatter.title || 'Blog post image'}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
@@ -54,7 +54,7 @@ export function BlogPosts({ posts }: BlogPostsProps) {
 
             <h2 className="text-xl font-semibold tracking-tight">
               <Link href={`/blog/${post.slug}`} className="hover:underline">
-                {post.frontmatter.title}
+                {post.frontmatter.title || 'Untitled Post'}
               </Link>
             </h2>
 
