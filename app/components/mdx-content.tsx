@@ -1,5 +1,7 @@
 'use client';
 
+import { MDXRemote } from 'next-mdx-remote';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ComponentPropsWithoutRef } from 'react';
@@ -51,7 +53,7 @@ export const mdxComponents = {
 };
 
 interface MDXContentProps {
-  source: any;
+  source: MDXRemoteSerializeResult;
 }
 
 export function MDXContent({ source }: MDXContentProps) {
