@@ -1,20 +1,18 @@
-import SectionContainer from 'app/components/layouts/section-container';
 import Link from 'next/link';
 
-export default function FourZeroFour() {
+export default function NotFound() {
   return (
-    <SectionContainer>
-      <div className="h-[calc(100vh-268px)] flex flex-col items-center justify-center space-y-4">
-        <h1 className="text-4xl font-extrabold leading-10 tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl sm:leading-none md:text-6xl">
-          404
-        </h1>
-        <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Looks like you&apos;re lost.
-        </p>
-        <Link href="/" className="underline-magical">
-          Go back home
-        </Link>
-      </div>
-    </SectionContainer>
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <h1 className="text-4xl font-bold">404 - Page Not Found</h1>
+      <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
+        The page you're looking for doesn't exist.
+      </p>
+      <Link
+        href="/"
+        className="mt-6 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+      >
+        Go Home
+      </Link>
+    </div>
   );
 }

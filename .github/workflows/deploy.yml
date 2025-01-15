@@ -26,9 +26,15 @@ jobs:
 
       - name: Build
         run: yarn build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ''
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
+          cname: armanruet.github.io
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy to GitHub Pages'

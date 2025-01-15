@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: 'Arman Hossen',
   },
   description: 'I build things for the web.',
-  metadataBase: new URL('https://armanruet.github.io/'),
+  metadataBase: new URL('https://armanruet.github.io'),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -9,6 +9,11 @@ interface BlogPostsProps {
   posts: BlogPost[];
 }
 
+// Update image paths to be absolute
+const imagePath = (path: string) => {
+  return path.startsWith('http') ? path : `/${path.replace(/^\//, '')}`;
+};
+
 export function BlogPosts({ posts }: BlogPostsProps) {
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -21,7 +26,7 @@ export function BlogPosts({ posts }: BlogPostsProps) {
             {post.frontmatter.image ? (
               <div className="relative w-full h-full bg-gray-100 dark:bg-gray-800">
                 <Image
-                  src={post.frontmatter.image}
+                  src={imagePath(post.frontmatter.image)}
                   alt={post.frontmatter.title || 'Blog post image'}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"

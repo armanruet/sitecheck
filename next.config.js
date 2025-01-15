@@ -3,9 +3,10 @@ const nextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
+    domains: ['cdn-images-1.medium.com'],
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/armanruet52.github.io' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/armanruet52.github.io/' : '',
+  basePath: '',
+  assetPrefix: '',
 }
 
 module.exports = nextConfig 
