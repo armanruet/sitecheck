@@ -18,7 +18,7 @@ export default function ProfileHeader() {
           className="w-48 h-48 rounded-full overflow-hidden flex-shrink-0"
         >
           <Image
-            src="/static/images/avatar.webp"
+            src="/static/images/avatar.png"
             alt="Arman Hossen"
             width={192}
             height={192}
