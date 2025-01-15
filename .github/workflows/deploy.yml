@@ -25,9 +25,12 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn build
+          cp -r public/static/images out/static/
         env:
-          NEXT_PUBLIC_BASE_PATH: ''
+          NODE_ENV: 'production'
+          NEXT_PUBLIC_BASE_PATH: '/armanruet.github.io'
 
       # Add debug steps to verify image copying
       - name: Debug - List public directory

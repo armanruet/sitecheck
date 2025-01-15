@@ -10,8 +10,8 @@ const nextConfig = {
       },
     ],
   },
-  basePath: '',
-  assetPrefix: '',
+  basePath: process.env.NODE_ENV === 'production' ? '/armanruet.github.io' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/armanruet.github.io' : '',
 }
 
 module.exports = nextConfig 
