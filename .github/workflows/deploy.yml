@@ -25,7 +25,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn build
+          cp -r public/static/images out/static/
         env:
           NEXT_PUBLIC_BASE_PATH: ''
 

@@ -15,13 +15,13 @@ export default function ProfileHeader() {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="w-48 h-48 rounded-full overflow-hidden flex-shrink-0"
+          className="relative w-48 h-48 rounded-full overflow-hidden flex-shrink-0"
         >
           <Image
             src="/static/images/avatar.png"
             alt="Arman Hossen"
-            width={192}
-            height={192}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             priority
           />
