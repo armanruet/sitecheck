@@ -5,12 +5,6 @@ import { FaGithub, FaLinkedin, FaGlobe } from 'react-icons/fa';
 import { HiOutlineArrowUpRight } from 'react-icons/hi2';
 import { IoLocationSharp } from 'react-icons/io5';
 import { motion } from 'framer-motion';
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-
-interface MDXFrontmatter {
-  title: string;
-  [key: string]: string | undefined;
-}
 
 export default function ProfileHeader() {
   return (
@@ -24,7 +18,7 @@ export default function ProfileHeader() {
           className="w-48 h-48 rounded-full overflow-hidden flex-shrink-0"
         >
           <Image
-            src="/static/images/avatar.png"
+            src="/static/images/avatar.webp"
             alt="Arman Hossen"
             width={192}
             height={192}
@@ -105,21 +99,6 @@ export default function ProfileHeader() {
           </a>
         </div>
       </motion.div>
-    </div>
-  );
-}
-
-export function MDXClient({
-  source,
-}: {
-  source: MDXRemoteSerializeResult<Record<string, unknown>, MDXFrontmatter>;
-}) {
-  return (
-    <div className="prose prose-lg dark:prose-invert mx-auto">
-      <h1 className="text-center mb-4">{source.frontmatter?.title}</h1>
-      <div className="text-justify">
-        <MDXRemote {...source} />
-      </div>
     </div>
   );
 }
