@@ -18,7 +18,7 @@ export default function ProfileHeader() {
           className="relative w-48 h-48 rounded-full overflow-hidden flex-shrink-0"
         >
           <Image
-            src="/static/images/avatar.png"
+            src="/armanruet52.github.io/static/images/avatar.png"
             alt="Arman Hossen"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

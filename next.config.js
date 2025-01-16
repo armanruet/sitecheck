@@ -10,9 +10,8 @@ const nextConfig = {
       },
     ],
   },
-  trailingSlash: true,
-  basePath: process.env.NODE_ENV === 'production' ? '' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '.' : '',
+  basePath: '/armanruet52.github.io',
+  assetPrefix: '/armanruet52.github.io',
 }
 
 module.exports = nextConfig 
