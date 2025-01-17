@@ -6,18 +6,32 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ComponentPropsWithoutRef } from 'react';
 
-type HeadingProps = ComponentPropsWithoutRef<'h1'>;
-type ParagraphProps = ComponentPropsWithoutRef<'p'>;
-type AnchorProps = ComponentPropsWithoutRef<'a'>;
-
-export const components = {
-  h1: (props: HeadingProps) => (
-    <h1 className="text-3xl font-bold tracking-tight mt-8 mb-4" {...props} />
+const components = {
+  h1: ({ children, ...props }: ComponentPropsWithoutRef<'h1'>) => (
+    <h1 className="text-3xl font-bold tracking-tight mt-8 mb-4" {...props}>
+      {children}
+    </h1>
   ),
-  p: (props: ParagraphProps) => (
-    <p className="leading-7 [&:not(:first-child)]:mt-6" {...props} />
-  ),
-  a: ({ href = '', ...props }: AnchorProps) => {
+  
+  p: ({ children, ...props }: ComponentPropsWithoutRef<'p'>) => {
+    // Check if the child is an img element
+    if (
+      typeof children === 'object' &&
+      children &&
+      'type' in children &&
+      children.type === 'img'
+    ) {
+      return children; // Return img directly without wrapping in p
+    }
+    
+    return (
+      <p className="leading-7 [&:not(:first-child)]:mt-6" {...props}>
+        {children}
+      </p>
+    );
+  },
+  
+  a: ({ href = '', children, ...props }: ComponentPropsWithoutRef<'a'>) => {
     if (href.startsWith('http')) {
       return (
         <a
@@ -26,7 +40,9 @@ export const components = {
           rel="noopener noreferrer"
           className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
           {...props}
-        />
+        >
+          {children}
+        </a>
       );
     }
     return (
@@ -34,12 +50,17 @@ export const components = {
         href={href}
         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
         {...props}
-      />
+      >
+        {children}
+      </Link>
     );
   },
-  img: ({ src, alt, ...props }: any) => (
-    <div className="relative aspect-video my-8">
-      {src && (
+  
+  img: ({ src, alt, ...props }: any) => {
+    if (!src) return null;
+    
+    return (
+      <div className="relative aspect-video my-8">
         <Image
           src={src}
           alt={alt || ''}
@@ -47,11 +68,15 @@ export const components = {
           className="object-cover rounded-lg"
           {...props}
         />
-      )}
-    </div>
-  ),
+      </div>
+    );
+  },
 };
 
 export function CustomMDX(props: MDXRemoteProps) {
-  return <MDXRemote {...props} components={{ ...components, ...(props.components || {}) }} />;
+  return (
+    <div className="prose dark:prose-invert max-w-none">
+      <MDXRemote {...props} components={{ ...components, ...(props.components || {}) }} />
+    </div>
+  );
 }

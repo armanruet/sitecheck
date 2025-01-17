@@ -1,5 +1,5 @@
 import { getPostFromSlug, getBlogPosts } from '../utils.server';
-import { MDXWrapper } from '../../components/mdx-wrapper';
+import { CustomMDX } from '../../components/mdx';
 import styles from './blog-post.module.css';
 
 // Required for static site generation with output: export
@@ -26,11 +26,15 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     <article className="mx-auto max-w-[900px] px-4 py-12">
       <header className="mb-8">
         <h1 className={styles.title}>{metadata.title}</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-2">{metadata.description}</p>
+        {metadata.description && (
+          <p className="text-gray-500 dark:text-gray-400 mt-2">
+            {metadata.description}
+          </p>
+        )}
       </header>
 
       <div className={styles.content}>
-        <MDXWrapper content={content} />
+        <CustomMDX {...content} />
       </div>
     </article>
   );

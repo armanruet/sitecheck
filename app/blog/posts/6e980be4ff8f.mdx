@@ -40,7 +40,7 @@ Based on official documentation, MarkItDown supports:
 
 When you need advanced capabilities, particularly for image descriptions, Azure OpenAI integration adds another layer of intelligence. Here’s the verified way to integrate with Azure OpenAI, based on official documentation:
 
-```
+```python
 from markitdown import MarkItDown
 from openai import AzureOpenAI
 import os
@@ -87,39 +87,43 @@ print(result.text_content)
 
 This batch-processing example has been verified against the official repository. For handling multiple documents efficiently:
 
-```
+```python
 import os
 from markitdown import MarkItDown
 from openai import AzureOpenAI
 
 # Initialize with Azure OpenAI (if needed)
+
 client = AzureOpenAI(
-    api_key=os.getenv("AZURE_OPENAI_KEY"),
-    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-    api_version="2024-02-15-preview"
+api_key=os.getenv("AZURE_OPENAI_KEY"),
+azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+api_version="2024-02-15-preview"
 )
 
 md = MarkItDown(
-    llm_client=client,
-    llm_model=os.getenv("AZURE_OPENAI_DEPLOYMENT")
+llm_client=client,
+llm_model=os.getenv("AZURE_OPENAI_DEPLOYMENT")
 )
 
 # Define supported formats
+
 supported_extensions = ('.pptx', '.docx', '.pdf', '.jpg', '.jpeg', '.png')
 files_to_convert = [f for f in os.listdir('.')
-                   if f.lower().endswith(supported_extensions)]
+if f.lower().endswith(supported_extensions)]
 
 # Process each file
+
 for file in files_to_convert:
-    print(f"\nProcessing: {file}")
-    try:
-        result = md.convert(file)
-        output_file = f"{os.path.splitext(file)[0]}.md"
-        with open(output_file, 'w') as f:
-            f.write(result.text_content)
-        print(f"Success: Created {output_file}")
-    except Exception as e:
-        print(f"Error processing {file}: {str(e)}")
+print(f"\nProcessing: {file}")
+try:
+result = md.convert(file)
+output_file = f"{os.path.splitext(file)[0]}.md"
+with open(output_file, 'w') as f:
+f.write(result.text_content)
+print(f"Success: Created {output_file}")
+except Exception as e:
+print(f"Error processing {file}: {str(e)}")
+
 ```
 
 ### Current Status & Limitations
@@ -144,3 +148,7 @@ MarkItDown represents a significant step forward in document processing technolo
 4. [Official MarkItDown Repository](https://github.com/microsoft/markitdown) — Last verified: December 22, 2024
 5. [Azure OpenAI Service Documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/) — Contains current API versions and integration guides
 6. [Azure AI Services Pricing](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/openai-service/) — For current Azure OpenAI costs and limits
+
+```
+
+```
