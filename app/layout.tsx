@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: '%s | Arman Hossen',
     default: 'Arman Hossen',
   },
-  description: 'I build things for the web.',
+  description: 'I transform complex problems into elegant solutions',
   metadataBase: new URL('https://armanruet.github.io'),
 };
 

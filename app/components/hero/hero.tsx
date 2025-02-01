@@ -29,7 +29,7 @@ export default function Hero() {
                 Arman Hossen
               </h1>
               <h2 className="text-2xl font-medium text-gray-700 dark:text-gray-300 sm:text-4xl md:text-5xl xl:text-6xl">
-                I build things for the web.
+              I transform complex problems into elegant solutions.
               </h2>
               <Link
                 href="/about"
