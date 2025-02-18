@@ -10,8 +10,9 @@ const nextConfig = {
       },
     ],
   },
-  basePath: '/sitecheck',
-  assetPrefix: '/sitecheck',
+  basePath: process.env.GITHUB_ACTIONS ? '/sitecheck' : '',
+  assetPrefix: process.env.GITHUB_ACTIONS ? '/sitecheck' : '',
+  trailingSlash: true,
 }
 
 module.exports = nextConfig 
