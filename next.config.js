@@ -10,9 +10,10 @@ const nextConfig = {
       },
     ],
   },
-  basePath: process.env.GITHUB_ACTIONS ? '/sitecheck' : '',
-  assetPrefix: process.env.GITHUB_ACTIONS ? '/sitecheck' : '',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
   trailingSlash: true,
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig 
