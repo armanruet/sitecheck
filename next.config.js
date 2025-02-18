@@ -11,7 +11,7 @@ const nextConfig = {
     ],
   },
   basePath: '/sitecheck',
-  assetPrefix: '/armanruet52.github.io',
+  assetPrefix: '/sitecheck',
 }
 
 module.exports = nextConfig 
