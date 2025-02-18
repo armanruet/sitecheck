@@ -10,7 +10,7 @@ const nextConfig = {
       },
     ],
   },
-  basePath: '/armanruet52.github.io',
+  basePath: '/sitecheck',
   assetPrefix: '/armanruet52.github.io',
 }
 
