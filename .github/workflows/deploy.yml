@@ -2,14 +2,21 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,7 +24,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: 'yarn'
 
       - name: Install dependencies
@@ -26,11 +33,26 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'Deploy to GitHub Pages'
+          enablement: true
+          static_site_generator: 'next'
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
