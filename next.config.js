@@ -11,7 +11,7 @@ const nextConfig = {
     ],
   },
   basePath: '/sitecheck',
-  assetPrefix: '/sitecheck',
+  assetPrefix: '/sitecheck/',
   trailingSlash: true,
   reactStrictMode: true,
 }
